@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,6 +19,11 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -36,6 +42,7 @@ public class Signup_Activity extends AppCompatActivity {
     EditText etEmail, etPassword,etConfirmPassword;
     Button bRegister;
     TextView tvAlreadyHaveAccount;
+    private FirebaseAuth mAuth;
     //Spinner spinnerInstitution;
     private static final String REGISTER_URL="http://murssaleentravels.com/locknearn/signup.php";
 
@@ -49,7 +56,7 @@ public class Signup_Activity extends AppCompatActivity {
         final Spinner spinnerInstitution = (Spinner) findViewById(R.id.spinnerInstitution);
         String [] plants={"Select your institution ...", "MIST", "NSU", "BUET", "SUST"};
 
-
+        mAuth = FirebaseAuth.getInstance();
         etEmail = (EditText)findViewById(R.id.etEmail);
         etPassword = (EditText)findViewById(R.id.etPassword);
         etConfirmPassword = (EditText)findViewById(R.id.etConfirmPassword);
@@ -118,7 +125,23 @@ public class Signup_Activity extends AppCompatActivity {
                     etConfirmPassword.requestFocus();
                 }
                 else
-                registerUser();
+                {
+                    mAuth.createUserWithEmailAndPassword(etEmail.toString(),etPassword.toString()).addOnCompleteListener(Signup_Activity.this, new OnCompleteListener<AuthResult>(){
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            Toast.makeText(Signup_Activity.this, "User Created", Toast.LENGTH_SHORT).show();
+
+                            if (!task.isSuccessful()) {
+                                Toast.makeText(Signup_Activity.this, "Authentication Failed", Toast.LENGTH_SHORT).show();
+
+                            } else {
+                                //addUser();
+                                startActivity(new Intent(Signup_Activity.this, Login_Activity.class));
+                                finish();
+                            }
+                        }
+                    });
+                }
             }
         });
 
