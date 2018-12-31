@@ -126,7 +126,7 @@ public class Signup_Activity extends AppCompatActivity {
                 }
                 else
                 {
-                    mAuth.createUserWithEmailAndPassword(etEmail.toString(),etPassword.toString()).addOnCompleteListener(Signup_Activity.this, new OnCompleteListener<AuthResult>(){
+                    mAuth.createUserWithEmailAndPassword(etEmail.getText().toString(),etPassword.getText().toString()).addOnCompleteListener(Signup_Activity.this, new OnCompleteListener<AuthResult>(){
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             Toast.makeText(Signup_Activity.this, "User Created", Toast.LENGTH_SHORT).show();

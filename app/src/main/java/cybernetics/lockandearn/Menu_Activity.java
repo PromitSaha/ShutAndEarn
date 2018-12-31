@@ -111,12 +111,16 @@ public class Menu_Activity extends AppCompatActivity {
         bLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SharedPreferences settings = getSharedPreferences(SHARED_PREF_NAME, MODE_PRIVATE);
+                /*SharedPreferences settings = getSharedPreferences(SHARED_PREF_NAME, MODE_PRIVATE);
                 SharedPreferences.Editor editor = settings.edit();
                 editor.remove(LOGGEDIN_SHARED_PREF);
                 editor.remove(EMAIL_SHARED_PREF);
 
                 editor.commit();
+                finish();*/
+
+                Intent intent = new Intent(getApplicationContext(), Login_Activity.class);
+                startActivity(intent);
                 finish();
             }
         });
